@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 此文件集中加载工具脚本
+# 此文件集中加载modules目录脚本
 
 # 全局变量
 . global.sh

@@ -57,4 +57,7 @@ export PATH=$PATH:$base_dir/sh:$base_dir/sh/modules/global:$base_dir/sh/modules/
 #echo app_version_code: $global_var_main_app_version_code;
 
 #版本号升级并提交到代码库
-increased_version_number_and_commit;
+#increased_version_number_and_commit;
+
+#taogu_expect_action;
+build_taogu_apk;
