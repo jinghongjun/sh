@@ -7,8 +7,27 @@ export PATH=$PATH:$base_dir/sh:$base_dir/sh/modules/global:$base_dir/sh/modules/
 
 # 2.加载所需要的shell脚本
 . load_modules.sh
-. taogu/global_taogu.sh
+. global_taogu.sh
 . taogu_tools.sh
 
-build_taogu_apk;
+taogu_build_config="${PWD}/sh/taogu/taogu.config";
+echo taogu_build_config is $taogu_build_config;
+# 判断当前目录下是否存在编译配置文件taogu.config
+if [ -d "$taogu_build_config" ]; then
+
+    i "当前目录下存在taogu.config文件";
+    
+else
+    `cat >> $taogu_build_config <<EOF
+#!/bin/bash
+hello=123
+EOF`
+    
+fi
+
+. $taogu_build_config
+
+echo hello is $hello;
+
+#build_taogu_apk;
 
