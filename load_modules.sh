@@ -23,6 +23,9 @@
 # 工具脚本
 . tools.sh
 
+# 文件处理脚本
+. file.sh
+
 # 初始化全局环境变量
 clear_global_var;
 
