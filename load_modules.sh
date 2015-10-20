@@ -24,12 +24,7 @@
 . tools.sh
 
 # 文件处理脚本
-. file.sh
-
-# 初始化全局环境变量
-clear_global_var;
-
-init_global_var "/codes/taogu/git/BRANCHS/branch_dev_xinxianghos/YHT_Patient";
+#. file.sh
 
 # 初始化终端样式文件
 setting_terminal_style;
