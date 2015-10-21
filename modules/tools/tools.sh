@@ -134,6 +134,7 @@ function update_content_in_file_by_specify_string () {
 	e "please input search file";
 	return;
     fi
+    echo search_string is $search_string, update_string is $update_string, search_file is $search_file;
     eval "sed -i -e 's,${search_string},${update_string},g' ${search_file} ";
 
     

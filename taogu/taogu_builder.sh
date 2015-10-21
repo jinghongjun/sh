@@ -18,11 +18,12 @@ taogu_build_config="${PWD}/sh/taogu/taogu.config";
 if [ ! -f "$taogu_build_config" ]; then
 cat >> $taogu_build_config <<EOF
 #!/bin/bash
-# 主应用目录路径
+# 主应用目录路径--必填
 TARGET_BUILD_MAIN_APP="";
-# 配置桃谷build目标版本
+# 配置桃谷build目标版本--必填
 TARGET_BUILD_ID="";
-# APK_NAME="";
+# 版本名称
+APK_NAME="";
 # 是否追加版本号
 INCREASED_VERSION_NUMBER=YES;
 # 是否把APK上传到服务器
@@ -69,6 +70,13 @@ else
     e "please input TARGET_BUILD_ID in $taogu_build_config";
     exit 0;
 fi
+
+if [ -z "$TARGET_BUILD_MAIN_APP" ]; then
+	e "please input TARGET_BUILD_MAIN_APP";
+	exit 0;
+fi
+
+init_global_var $TARGET_BUILD_MAIN_APP;
 
 # 初始化不同医院编译配置
 case $TARGET_BUILD_ID in
@@ -141,18 +149,39 @@ case $TARGET_BUILD_ID in
 		APK_NAME=${TARGET_BUILD_TYPE_REL}_Zhumadian;;
 esac
 
-if [ -z "$TARGET_BUILD_MAIN_APP" ]; then
-	e "please input TARGET_BUILD_MAIN_APP";
-	exit 0;
-fi    
-
-i "--------- taogu.config ------------";
+i "--------------------------------- taogu.config -------------------------------------";
 i "TARGET_BUILD_ID: $TARGET_BUILD_ID";
+i "TARGET_BUILD_TYPE: $TARGET_BUILD_TYPE";
+i "APK_NAME: $APK_NAME";
+i "INCREASED_VERSION_NUMBER: $INCREASED_VERSION_NUMBER";
+i "UPLOAD_BUILD_APK: $UPLOAD_BUILD_APK";
+i "UPDATE_INDEX_CONFIG: $UPDATE_INDEX_CONFIG";
+i "SEND_EMAIL_NOTIFICATION: $SEND_EMAIL_NOTIFICATION";
 i "TARGET_BUILD_MAIN_APP: $TARGET_BUILD_MAIN_APP";
+i "------------------------------------------------------------------------------------"
 
-i "------------------------------------"
+# 是否提交版本号：需要在taogu.config中配置INCREASED_VERSION_NUMBER=YES
+if [ -n "$INCREASED_VERSION_NUMBER" ]; then
+	if [ "$INCREASED_VERSION_NUMBER" = "$GLOBAL_CONSTANT_YES" ]; then
+                increased_version_number_and_commit;
+		i "${global_constant_current_user_name}: Change version number to ${global_var_main_app_version_code}";
+	fi
+fi
 
-init_global_var $TARGET_BUILD_MAIN_APP;
+if [ "$INCREASED_VERSION_NUMBER" != "$GLOBAL_CONSTANT_YES" ]; then
+	# 同步代码：自动同步svn或git管理代码
+	sync_code; 
+fi
+
+if [ "$TARGET_BUILD_TYPE" = "$TARGET_BUILD_TYPE_DEV" ]; then
+	#开发版处理
+	i "开发版处理";
+	update_content_in_file_by_specify_string "private static boolean DEVELOPING_ENV = false;" "private static boolean DEVELOPING_ENV = true;" $global_var_system_function;
+else
+	#正式版处理
+	i "正式版处理";
+	update_content_in_file_by_specify_string "private static boolean DEVELOPING_ENV = true;" "private static boolean DEVELOPING_ENV = false;" $global_var_system_function;
+fi
 
 #build_taogu_apk;
 

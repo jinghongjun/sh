@@ -14,6 +14,9 @@ echo ">>>>>>>> include global.sh"
 
 # 全局变量命名规则: global_var_use
 # 全局常量命名规则: global_constant_use
+###############################      YES/NO       ##################################
+GLOBAL_CONSTANT_YES="YES";
+GLOBAL_CONSTANT_NO="NO"
 
 # 全局变量命名区
 global_var_find_file="";

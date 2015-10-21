@@ -72,7 +72,6 @@ ZHUMADIAN_REL=22;
 TARGET_BUILD_TYPE_DEV="DEV";
 TARGET_BUILD_TYPE_REL="REL";
 
-###############################      YES/NO       ##################################
 
 global_var_main_app_dir="";
 global_var_main_app_build_gradle="";
